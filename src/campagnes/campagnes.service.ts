@@ -4,6 +4,7 @@ import { UpdateCampagneDto } from './dto/update-campagne.dto';
 import { Campagne } from './entities/campagne.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class CampagnesService {

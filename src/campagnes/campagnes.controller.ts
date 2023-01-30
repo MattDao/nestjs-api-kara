@@ -5,7 +5,7 @@ import { CreateCampagneDto } from './dto/create-campagne.dto';
 import { UpdateCampagneDto } from './dto/update-campagne.dto';
 import { User } from 'src/users/entities/user.entity';
 import { Campagne } from './entities/campagne.entity';
-
+import { GetUser } from 'src/auth/get-user.decorator';
 
 @Controller('campagnes')
 export class CampagnesController {
@@ -14,7 +14,7 @@ export class CampagnesController {
   @Post()
   create(
     @Body() createCampagneDto: CreateCampagneDto,
-  @Getuser() user: User,
+  @GetUser() user: User,
   ): Promise<Campagne | string> {
   console.log('qui est connecte ? ',user.email)
     return this.campagnesService.create(createCampagneDto, user);
