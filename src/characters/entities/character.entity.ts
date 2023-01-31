@@ -87,7 +87,7 @@ export class Character {
     })
     magic: number;
 
-    @ManyToOne(() => User, (chara) => chara.id, {
+    @ManyToOne(() => User, (character) => character.id, {
         nullable: false,
         onDelete: 'CASCADE',
     })
@@ -103,7 +103,7 @@ export class Character {
         nullable: false,
         onDelete: 'CASCADE',
     })
-    inventory: Inventory;
+    inventoryId: Inventory;
 
 }
 

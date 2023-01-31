@@ -3,4 +3,6 @@ export enum RoleEnumType {
    ADMIN = 'admin',
 }
 
-export class User {}
+export class User {
+  campagne: any;
+}

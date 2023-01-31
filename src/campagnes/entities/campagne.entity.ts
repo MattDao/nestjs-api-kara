@@ -47,13 +47,13 @@ export class Campagne {
     }) 
     userId: User;
     
-    @OneToOne(() => Dice, (dice) => dice.campagne, {
+    @OneToOne(() => Dice, (dice) => dice.campagneId, {
         nullable: false,
         onDelete: 'CASCADE',
     }) 
     diceId: Dice;
   
-    @OneToMany(() => Character, (character) => character.campagne, {
+    @OneToMany(() => Character, (character) => character.campagneId, {
       onDelete: 'CASCADE',
     })
     characterId: Character[];

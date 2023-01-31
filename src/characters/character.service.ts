@@ -67,7 +67,7 @@ export class CharacterService {
      ): Promise<Character | string> {
       console.log(idvalue);
       console.log('utilisateur : ', user);
-      const {name} = updateCharacterDto;
+      const {name} = updateCharacterDto; //ajouter les stats ?
       console.log('nom : ', name);
       const query = this.CharacterRepository.createQueryBuilder();
       query.where({ name}).andWhere({ userId: user});
@@ -85,9 +85,47 @@ export class CharacterService {
         throw new NotFoundException(`Aucun personnage trouvé abec le nom ${idvalue}`);
       }
       try {
-        if (updateCharacterDto.name !== null) {
-          charaToUpdate.name = updateCharacterDto.name;
+        if (updateCharacterDto.strength !== null) {
+          charaToUpdate.strength = charaToUpdate.strength;
+      } else{
+        charaToUpdate.strength = updateCharacterDto.strength;
       }
+      if (updateCharacterDto.dexterity!== null) {
+        charaToUpdate.dexterity = charaToUpdate.dexterity;
+        } else{
+          charaToUpdate.dexterity = updateCharacterDto.dexterity;
+        }
+        if (updateCharacterDto.constitution!== null) {
+          charaToUpdate.constitution = charaToUpdate.constitution;
+          } else{
+            charaToUpdate.constitution = updateCharacterDto.constitution;
+          }
+          if (updateCharacterDto.intelligence!== null) {
+            charaToUpdate.intelligence = charaToUpdate.intelligence;
+            } else{
+              charaToUpdate.intelligence = updateCharacterDto.intelligence;
+            }
+            if (updateCharacterDto.charisma!== null) {
+              charaToUpdate.charisma = charaToUpdate.charisma;
+              } else{ 
+                charaToUpdate.charisma = updateCharacterDto.charisma;
+              }
+              if (updateCharacterDto.luck!== null) {
+                charaToUpdate.luck = charaToUpdate.luck;
+                } else{
+                  charaToUpdate.luck = updateCharacterDto.luck;
+                }
+                if (updateCharacterDto.stealth!== null) {
+                  charaToUpdate.stealth = charaToUpdate.stealth;
+                  } else{
+                  charaToUpdate.stealth = updateCharacterDto.stealth;
+                }
+                if (updateCharacterDto.magic!== null) {
+                  charaToUpdate.magic = charaToUpdate.magic;
+                  } else{
+                    charaToUpdate.magic = updateCharacterDto.magic;
+                  }
+
       return await this.CharacterRepository.save(charaToUpdate);
     } catch {
       throw new Error('Une autre erreur est survenue');
