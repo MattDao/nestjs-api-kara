@@ -21,9 +21,9 @@ export class DicesService {
       const { nameSet, value } = createDiceDto;
       const query = this.dicesRepository.createQueryBuilder();
       query.where({nameSet}).andWhere({ campId: campagne});
-      const eistAlready = await query.getOne();
+      const existAlready = await query.getOne();
 
-      if (eistAlready !== null) {
+      if (existAlready !== null) {
         
     return 'Le set de Dés existe déjà';
   }

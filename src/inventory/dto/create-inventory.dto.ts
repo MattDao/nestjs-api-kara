@@ -1,1 +1,3 @@
-export class CreateInventoryDto {}
+export class CreateInventoryDto {
+    naameItem: string;
+}
