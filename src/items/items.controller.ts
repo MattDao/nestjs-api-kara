@@ -19,7 +19,7 @@ export class ItemsController {
     @GetUser() user:User,
     ):Promise<Item | string> {
       console.log(User);
-    return this.itemsService.create(createItemDto);
+    return this.itemsService.create(createItemDto, user);
   }
 
   @Get()

@@ -8,9 +8,9 @@ export const GetUser = createParamDecorator(
     const user: User = {
       ...req.user,
     };
-    delete user.characters;
+    delete user.character;
     delete user.taches;
-    delete user.campagnes;
+    delete user.campagne;
 
     return user;
   },

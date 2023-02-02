@@ -35,14 +35,14 @@ export class DicesController {
     return this.dicesService.findOne(id,campagne);
   }
 
-  @Patch(':id')
+ /* @Patch(':id')
   update(
     @Param('id') id: string,
      @Body() updateDiceDto: UpdateDiceDto,
      @GetUser() campagne : Campagne
      ):Promise<Dice | string> {
     return this.dicesService.update(id, updateDiceDto, campagne);
-  }
+  }*/
 
   @Delete(':id')
   remove(

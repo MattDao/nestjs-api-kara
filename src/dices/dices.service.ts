@@ -35,7 +35,7 @@ export class DicesService {
     return await this.dicesRepository.save(newDice);
   }
 
-  findAllDicesByCampagne(
+  async findAllDicesByCampagne(
     campagne: Campagne,
 
   ): Promise<Dice[]> {
