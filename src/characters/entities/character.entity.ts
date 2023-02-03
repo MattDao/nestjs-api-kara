@@ -1,8 +1,8 @@
 import { Campagne } from "src/campagnes/entities/campagne.entity";
 import { User } from "src/users/entities/user.entity";
 import { Item } from "src/items/entities/item.entity";
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Inventory } from "src/inventory/entities/inventory.entity";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+
 
 
 @Entity()
@@ -34,56 +34,56 @@ export class Character {
     @Column({ 
         nullable: false,
         type: 'int',
-        length: 2,
+        
     })
     strength: number;
 
     @Column({ 
         nullable: false,
         type: 'int',
-        length: 2,
+        
     })
     dexterity: number;
 
     @Column({ 
         nullable: false,
         type: 'int',
-        length: 2,
+        
     })
     constitution: number;
 
     @Column({ 
         nullable: false,
         type: 'int',
-        length: 2,
+        
     })
     intelligence: number;
 
     @Column({ 
         nullable: false,
         type: 'int',
-        length: 2,
+       
     })
     charisma: number;
 
     @Column({ 
         nullable: false,
         type: 'int',
-        length: 2,
+        
     })
     luck: number;
 
     @Column({ 
         nullable: false,
         type: 'int',
-        length: 2,
+        
     })
     stealth: number;
 
     @Column({ 
         nullable: false,
         type: 'int',
-        length: 2,
+        
     })
     magic: number;
 
@@ -99,11 +99,9 @@ export class Character {
     })
     campagneId: Campagne;
 
-    @OneToMany(() => Inventory, (inventory) => inventory.id, {
-        nullable: false,
-        onDelete: 'CASCADE',
-    })
-    inventoryId: Inventory;
+    @ManyToMany(() => Item,{ eager: true}) 
+    @JoinTable()
+    items: Item[]
 
 }
 

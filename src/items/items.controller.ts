@@ -16,10 +16,10 @@ export class ItemsController {
   @Post()
   create(
     @Body() createItemDto: CreateItemDto,
-    @GetUser() user:User,
+    
     ):Promise<Item | string> {
       console.log(User);
-    return this.itemsService.create(createItemDto, user);
+    return this.itemsService.create(createItemDto);
   }
 
   @Get()

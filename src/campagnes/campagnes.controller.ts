@@ -14,10 +14,10 @@ export class CampagnesController {
   @Post()
   create(
     @Body() createCampagneDto: CreateCampagneDto,
-  @GetUser() user: User,
+  @GetUser() userId: User,
   ): Promise<Campagne | string> {
-  console.log('qui est connecte ? ',user.email)
-    return this.campagnesService.create(createCampagneDto, user);
+  console.log('qui est connecte ? ',userId.email)
+    return this.campagnesService.create(createCampagneDto, userId);
   }
 
   @Get()

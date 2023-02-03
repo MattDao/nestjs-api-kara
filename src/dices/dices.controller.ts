@@ -15,24 +15,24 @@ export class DicesController {
   @Post()
   create(
     @Body() createDiceDto: CreateDiceDto,
-    @GetUser() campagne: Campagne
+    @GetUser() user: User
   ): Promise<Dice | string> {
-    return this.dicesService.create(createDiceDto, campagne);
+    return this.dicesService.create(createDiceDto, user);
   }
 
   @Get()
   findAllDicesByUser(
-    @GetUser() campagne: Campagne,
+    @GetUser() user: User,
   ): Promise<Dice[]>{
-    return this.dicesService.findAllDicesByCampagne(campagne);
+    return this.dicesService.findAllDicesByUser(user);
   }
 
   @Get(':id')
   findOne(
     @Param('id') id: string,
-    @GetUser() campagne: Campagne,
+    @GetUser() user: User,
     ): Promise<Dice | string> {
-    return this.dicesService.findOne(id,campagne);
+    return this.dicesService.findOne(id,user);
   }
 
  /* @Patch(':id')
@@ -47,9 +47,8 @@ export class DicesController {
   @Delete(':id')
   remove(
     @Param('id') id: string,
-    @Body()
-   campagne : Campagne,
+    @GetUser() user: User
     ) {
-    return this.dicesService.remove(id, campagne);
+    return this.dicesService.remove(id, user);
   }
 }

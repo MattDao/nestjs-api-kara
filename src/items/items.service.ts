@@ -11,34 +11,34 @@ import { Item } from './entities/item.entity';
 export class ItemsService {
   constructor(
     @InjectRepository(Item)
-    private ItemRepository: Repository<Item>,
+    private itemRepository: Repository<Item>,
     @InjectRepository(User)
-    private UserRepository: Repository<User>,
+    private userRepository: Repository<User>,
   ) {}
 
   async create(
     createItemDto: CreateItemDto,
-    user: User,
+    
     ): Promise<Item | string> {
       const {name} = createItemDto;
-      const query = this.ItemRepository.createQueryBuilder();
-      query.where({name}).andWhere({userId: user});
+      const query = this.itemRepository.createQueryBuilder();
+      query.where({name});
       const existAlready = await query.getOne();
 
       if (existAlready !== null) {
         return 'Cet objet existe déjà';
       }
-      const newItem = await this.ItemRepository.create({
+      const newItem = await this.itemRepository.create({
         ...createItemDto,
-        userId: user,
+        
       });
-    return await this.ItemRepository.save(newItem);
+    return await this.itemRepository.save(newItem);
   }
 
   async findAllByUser(
     user: User,
     ): Promise<Item[]> {
-      const itemFound = await this.ItemRepository.findBy({
+      const itemFound = await this.itemRepository.findBy({
         userId: user,
       });
       if (!itemFound) {
@@ -51,7 +51,7 @@ export class ItemsService {
     idValue: string,
     user: User,
     ): Promise<Item | string> {
-      const itemFound = await this.ItemRepository.findOneBy({
+      const itemFound = await this.itemRepository.findOneBy({
         id: idValue,
         userId: user,
       });
@@ -69,13 +69,13 @@ export class ItemsService {
     idValue: string,
     user: User,
     ): Promise<Item | string> {
-      const result = await this.ItemRepository.delete({
+      const result = await this.itemRepository.delete({
         userId: user,
         id: idValue,
       });
       if (result.affected === 0) {
         throw new NotFoundException(`l'objet ${idValue} n'existe pas `);
       }
-    return `L'objet ${id} à été supprimé`;
+    return `L'objet ${idValue} à été supprimé`;
   }
 }

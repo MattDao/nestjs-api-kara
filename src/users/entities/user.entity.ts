@@ -1,5 +1,6 @@
 import { Campagne } from "src/campagnes/entities/campagne.entity";
 import { Character } from "src/characters/entities/character.entity";
+import { Dice } from "src/dices/entities/dice.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum RoleEnumType {
@@ -45,14 +46,18 @@ export class User {
 @OneToMany(() => Character, (character) => character.userId, {
   onDelete: 'CASCADE',
 })
-character: Character[];
+characterId: Character[];
 
 @OneToMany(() => Campagne, (campagne) => campagne.userId, {
   onDelete: 'CASCADE',
 })
-campagne: Campagne[];
-  taches: any;
+campagneId: Campagne[];
+
+@OneToMany(() => Dice, (dice) => dice.user, {
+  onDelete: 'CASCADE',
+  
+  
+})
+  diceId: Dice;
+
 }
-
-
-

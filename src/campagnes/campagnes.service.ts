@@ -53,7 +53,7 @@ return await this.campagneRepository.save(newCampagne);
     idValue: string,
     user: User,
     ): Promise<Campagne | string> {
-      const campagneFound = await this.campagneRepository.findOne({
+      const campagneFound = await this.campagneRepository.findOneBy({
         id: idValue,
         userId: user,
       });

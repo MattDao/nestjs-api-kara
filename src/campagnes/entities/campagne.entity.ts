@@ -41,13 +41,13 @@ export class Campagne {
       })
       body: string;
   
-    @ManyToOne(() => User, (user) => user.campagne, {
+    @ManyToOne(() => User, (user) => user.campagneId, {
       nullable: false,
       onDelete: 'CASCADE',
     }) 
     userId: User;
     
-    @OneToOne(() => Dice, (dice) => dice.campagneId, {
+    @OneToOne(() => Dice, (dice) => dice.campagnes, {
         nullable: false,
         onDelete: 'CASCADE',
     }) 

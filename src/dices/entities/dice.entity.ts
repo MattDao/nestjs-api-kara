@@ -1,5 +1,6 @@
 import { Campagne } from "src/campagnes/entities/campagne.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/users/entities/user.entity";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Dice {
@@ -21,9 +22,14 @@ export class Dice {
       
         // --- Clef étrangères --- //
 
-        @OneToMany(() => Campagne, (campagnes) => campagnes.diceId, {
+        @ManyToOne(() => User, (user) => user.diceId, {
             onDelete: 'CASCADE',
           })
-          campagneId: Campagne[];
+          user: User;
+
+        @OneToMany(() => Campagne, (campagne) => campagne.diceId, {
+          onDelete: 'CASCADE',
+        })
+        campagnes: Campagne;
 
 }
