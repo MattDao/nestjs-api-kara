@@ -5,7 +5,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 
-//Création de la méthode du JWT
+// --- Création de la méthode du JWT --- //
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
@@ -20,10 +20,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any): Promise<User> {
     console.log('validate');
-    const emailUserPayload = payload.user.email;
-    console.log('mail', emailUserPayload.email);
+    const {id} = payload;
     const user: User = await this.userRepository.findOneBy({
-      email: emailUserPayload,
+      id,
     });
 
     if (!user) throw new UnauthorizedException();

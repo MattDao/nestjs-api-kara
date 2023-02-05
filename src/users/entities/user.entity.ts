@@ -3,6 +3,7 @@ import { Character } from "src/characters/entities/character.entity";
 import { Dice } from "src/dices/entities/dice.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
+// --- Mise en place des colonnes de l'entité users qui peut etre user ou mj --- //
 export enum RoleEnumType {
     USER = 'user',
    MJ = 'mj',
@@ -10,9 +11,12 @@ export enum RoleEnumType {
 
 @Entity()
 export class User {
+
+  // ---Génration de la clef primaire --- //
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+ // --- Génération des colonnes de l'entités --- //
   @Column({
     nullable: false,
     type: 'varchar',
@@ -41,7 +45,7 @@ export class User {
   role: RoleEnumType;
 
 
-// --- Clefs étrangères --- //
+// ---  Génération des clefs étrangères / en fonction de la cardinalités des tables --- //
 
 @OneToMany(() => Character, (character) => character.userId, {
   onDelete: 'CASCADE',

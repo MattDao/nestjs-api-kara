@@ -21,10 +21,12 @@ export class AuthService {
   
   async register(createAuthDto: CreateAuthDto) {
     const { pseudo, email, password, role } = createAuthDto;
-    // hashage du mot de passe
+
+    // --- hashage du mot de passe ---//
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
-    // création d'une entité user
+
+    // --- création d'une entité user --- //
     const user = this.userRepository.create({
       pseudo,
       email,
@@ -32,8 +34,8 @@ export class AuthService {
       role,
     });
     
- //Ici on crée la gestion d'erreur (ne pouvant pas créer 2 fois le même compte).
-    // On compare email et mot de passe pour savoir si le compte user existe déja.
+ // --- Ici on crée la gestion d'erreur (ne pouvant pas créer 2 fois le même compte) --- //
+ // --- On compare email et mot de passe pour savoir si le compte user existe déja --- //
     const pseudoExistAlready = await this.userRepository.findBy({
       pseudo,
     });
@@ -49,7 +51,8 @@ export class AuthService {
       const createdUser = await this.userRepository.save(user);
       return createdUser;
     } catch (error) {
-      // gestion des erreurs
+
+  // --- Gestion des erreurs --- //
       if (error.code === '23505') {
         throw new ConflictException('Ce nom existe déja');
       } else {
@@ -58,22 +61,29 @@ export class AuthService {
     }
   }
 
-  //Connexion d'un utilisateur
+  //--- Connexion d'un utilisateur --- //
   async login(loginDto: LoginDto) {
-    const { pseudo, email, password, role } = loginDto;
+    const {email, password} = loginDto;
     const user = await this.userRepository.findOneBy({
       email,
     });
-    console.log('je veux ton nom------------', pseudo);
+    
     console.log('je veux ton mail-----------', email);
     console.log('je veux ton mdp------------', password);
-    console.log('je veux ton role-----------', role);
-    //Ici comparasaison du MP Hashé
+   
+    // --- Ici comparasaison du MP Hashé --- //
     if (user && (await bcrypt.compare(password, user.password))) {
 
-      const payload = { user };
-      console.log('je veux ton profil--------', user);
-      //Ici envoie du Token d'accés
+      const payload = {
+        id: user.id,
+        email: user.email,
+        password: user.password,
+        role: user.role,
+      };
+      
+      console.log('velaur du user dans payload', payload);
+
+      // ---Génération du token de l'utilisateteur crée --- //
       const accessToken = await this.jwtService.sign(payload);
       return { accessToken };
     } else {

@@ -29,14 +29,14 @@ export class Campagne {
       style: string;
 
     @Column({
-        nullable: false,
+        nullable: true,
         type: 'varchar',
         length: 255,
         })
     imgBackground: string;
 
     @Column({
-        nullable: false,
+        nullable: true,
         type: 'text',
       })
       body: string;

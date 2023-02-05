@@ -1,5 +1,5 @@
 export class CreateCampagneDto {
-    name: string;
+    name?: string;
     style: string;
     imgBackground: string;
     body: string;

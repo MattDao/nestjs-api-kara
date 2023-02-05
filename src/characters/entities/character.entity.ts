@@ -18,14 +18,14 @@ export class Character {
     name: string;
 
     @Column({ 
-        nullable: false,
+        nullable: true,
         type: 'varchar',
         length: 255,
     })
     imgBackground: string;
 
     @Column({ 
-        nullable: false,
+        nullable: true,
         type: 'varchar',
         length: 255,
     })
