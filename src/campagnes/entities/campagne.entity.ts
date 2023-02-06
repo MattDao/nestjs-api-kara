@@ -45,7 +45,7 @@ export class Campagne {
       nullable: false,
       onDelete: 'CASCADE',
     }) 
-    userId: User;
+    userMj: User;
     
     @OneToOne(() => Dice, (dice) => dice.campagnes, {
         nullable: false,

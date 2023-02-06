@@ -9,7 +9,6 @@ import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
-  userService: any;
   constructor(private readonly authService: AuthService) {}
 
   // --- Ici l'utilisateur crée son profil --- //
@@ -21,7 +20,7 @@ export class AuthController {
 
   // --- Ici l'utilisateur se connecte --- //
  
-  @Post('/login')
+  @Post('login')
   login(@Body() loginDto: LoginDto): Promise<{accessToken: string}> {
     return this.authService.login(loginDto);
 }

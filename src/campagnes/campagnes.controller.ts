@@ -3,28 +3,40 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards} from '@ne
 import { CampagnesService } from './campagnes.service';
 import { CreateCampagneDto } from './dto/create-campagne.dto';
 import { UpdateCampagneDto } from './dto/update-campagne.dto';
-import { User } from 'src/users/entities/user.entity';
+import { RoleEnumType, User } from 'src/users/entities/user.entity';
 import { Campagne } from './entities/campagne.entity';
 import { GetUser } from 'src/auth/get-user.decorator';
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'src/auth/roles.guards';
+import { Roles } from 'src/auth/roles.decorator';
+import { PassportModule } from '@nestjs/passport';
 
 @Controller('campagnes')
-export class CampagnesController {
+@UseGuards(AuthGuard("jwt"))
+export class CampagnesController {   
   constructor(private readonly campagnesService: CampagnesService) {}
-
-  @Post()
+// ---- Route qui mènes a la méthode de création de campagne --- //
+  @Post() 
+  // --- Protège son utilisation et determine le role qui peut l'utiliser --- //
+  @UseGuards(RolesGuard)
+  @Roles(RoleEnumType.MJ)
   create(
+    // --- Ici mes paramètres nécessaires a son usage --- //
     @Body() createCampagneDto: CreateCampagneDto,
-  @GetUser() userId: User,
-  ): Promise<Campagne | string> {
-  console.log('qui est connecte ? ',userId.email)
-    return this.campagnesService.create(createCampagneDto, userId);
+  @GetUser() userConnected: User,
+
+  ): Promise<Campagne> {
+  console.log('qui est connecte ? ',userConnected)
+    return this.campagnesService.create(createCampagneDto, userConnected);
   }
 
   @Get()
-  findAllCampagneByUser(
+  @UseGuards(RolesGuard)
+  @Roles(RoleEnumType.MJ)
+  findAllCampagne(
     @GetUser() user: User,
   ): Promise<Campagne[]> {
-    return this.campagnesService.findAllCampagneByUser(user);
+    return this.campagnesService.findAllCampagne();
   }
 
   @Get(':id')
@@ -32,10 +44,12 @@ export class CampagnesController {
     @Param('id') id: string,
     @GetUser() user: User,
     ): Promise<Campagne | string> {
-    return this.campagnesService.findOne(id, user);
+    return this.campagnesService.findOne(id);
   }
 
   @Patch(':id')
+  @UseGuards(RolesGuard)
+  @Roles(RoleEnumType.MJ)
   update(
     @Param('id') id: string,
      @Body() updateCampagneDto: UpdateCampagneDto,
@@ -45,6 +59,8 @@ export class CampagnesController {
   }
 
   @Delete(':id')
+  @UseGuards(RolesGuard)
+  @Roles(RoleEnumType.MJ)
   remove(
     @Param('id') id: string,
     @Body()

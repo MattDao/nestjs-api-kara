@@ -52,7 +52,7 @@ export class User {
 })
 characterId: Character[];
 
-@OneToMany(() => Campagne, (campagne) => campagne.userId, {
+@OneToMany(() => Campagne, (campagne) => campagne.userMj, {
   onDelete: 'CASCADE',
 })
 campagneId: Campagne[];
