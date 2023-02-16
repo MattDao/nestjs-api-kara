@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -8,13 +12,13 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UsersService {
   constructor(
-   @InjectRepository(User)
-      private userRepository: Repository<User>) {}
-  
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
+
   /*create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }*/
-
 
   // --- ¨Pour les maitres de jeu --- //
 
@@ -22,24 +26,22 @@ export class UsersService {
     return await this.userRepository.find();
   }
 
-  async findOneUserByMj(
-    idValue: string,
-    user: User
-    ): Promise<User> {
-      try {
-        const UserFound = await this.userRepository.findOneBy({
-          id: idValue,
-        });
+  async findOneUserByMj(idValue: string, user: User): Promise<User> {
+    try {
+      const UserFound = await this.userRepository.findOneBy({
+        id: idValue,
+      });
       return UserFound;
-  } catch (error) {
-    if (error) {
-      throw new NotFoundException( ` Pas de joueur avec l'identifiant ${idValue} `);
+    } catch (error) {
+      if (error) {
+        throw new NotFoundException(
+          ` Pas de joueur avec l'identifiant ${idValue} `,
+        );
+      }
     }
   }
-}
   // --- Pour les Joueurs& les Mj --- //
 
-  
   async updateUser(idValue: string, updateUserDto: UpdateUserDto, user: User) {
     const updateUserFound = await this.userRepository.findOneBy({
       id: idValue,
@@ -82,5 +84,4 @@ export class UsersService {
     }
     return `Cette action a supprimé l'utilisateur ${user.email}`;
   }
-  }
-
+}

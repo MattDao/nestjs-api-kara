@@ -1,4 +1,9 @@
-import { ConflictException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { 
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+    UnauthorizedException 
+    } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import * as bcrypt from 'bcrypt';
@@ -7,7 +12,6 @@ import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm/repository/Repository';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
-
 
 @Injectable()
 export class AuthService {
@@ -51,8 +55,7 @@ export class AuthService {
       const createdUser = await this.userRepository.save(user);
       return createdUser;
     } catch (error) {
-
-  // --- Gestion des erreurs --- //
+      // --- Gestion des erreurs --- //
       if (error.code === '23505') {
         throw new ConflictException('Ce nom existe déja');
       } else {
@@ -63,24 +66,23 @@ export class AuthService {
 
   //--- Connexion d'un utilisateur --- //
   async login(loginDto: LoginDto) {
-    const {email, password} = loginDto;
+    const { email, password } = loginDto;
     const user = await this.userRepository.findOneBy({
       email,
     });
-    
+
     console.log('je veux ton mail-----------', email);
     console.log('je veux ton mdp------------', password);
-   
+
     // --- Ici comparasaison du MP Hashé --- //
     if (user && (await bcrypt.compare(password, user.password))) {
-
       const payload = {
         id: user.id,
         email: user.email,
         password: user.password,
         role: user.role,
       };
-      
+
       console.log('velaur du user dans payload', payload);
 
       // ---Génération du token de l'utilisateteur crée --- //

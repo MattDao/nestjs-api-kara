@@ -17,57 +17,47 @@ export class DicesService {
 
   async create(
     createDiceDto: CreateDiceDto,
-     user: User,
-    ): Promise<Dice |string> {
-      const { nameSet, value } = createDiceDto;
-      const query = this.dicesRepository.createQueryBuilder();
-      query.where({nameSet}).andWhere({ campId: Campagne});
-      const existAlready = await query.getOne();
+    user: User,
+  ): Promise<Dice | string> {
+    const { nameSet, value } = createDiceDto;
+    const query = this.dicesRepository.createQueryBuilder();
+    query.where({ nameSet }).andWhere({ campId: Campagne });
+    const existAlready = await query.getOne();
 
-      if (existAlready !== null) {
-        
-    return 'Le set de Dés existe déjà';
-  }
+    if (existAlready !== null) {
+      return 'Le set de Dés existe déjà';
+    }
 
-  const newDice = await this.dicesRepository.create({
-    ...createDiceDto,
-     user,
-  });
+    const newDice = await this.dicesRepository.create({
+      ...createDiceDto,
+      user,
+    });
     return await this.dicesRepository.save(newDice);
   }
 
-  async findAllDicesByUser(
-   user: User,
-): Promise<Dice[]> {
+  async findAllDicesByUser(user: User): Promise<Dice[]> {
     const diceFound = await this.dicesRepository.findBy({
       user: user,
     });
     console.log(' dés trouvés', diceFound);
     if (!diceFound) {
-      throw new NotFoundException( 'Dés non trouvés');
+      throw new NotFoundException('Dés non trouvés');
     }
     return diceFound;
   }
 
-  async findOne(
-    idValue: string,
-    user: User,
-    ): Promise<Dice | string> {
+  async findOne(idValue: string, user: User): Promise<Dice | string> {
     const diceFound = await this.dicesRepository.findOneBy({
       id: idValue,
       user: user,
     });
     if (!diceFound) {
       throw new NotFoundException('Dés non trouvés');
-  }
+    }
     return diceFound;
   }
 
- 
- async remove(
-  idValue: string,
-  user: User,
-  ): Promise<Dice | string> {
+  async remove(idValue: string, user: User): Promise<Dice | string> {
     const result = await this.dicesRepository.delete({
       id: idValue,
       user: user,

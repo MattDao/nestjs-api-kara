@@ -13,131 +13,138 @@ export class CharacterService {
     private CharacterRepository: Repository<Character>,
     @InjectRepository(User)
     private UserRepository: Repository<User>,
-  ) {
+  ) {}
 
-  }
+
+            // --- Méthode pour créer un personnage --- //
   async create(
     createCharacterDto: CreateCharacterDto,
-    user: User,
-    ): Promise<Character | string> {
-      const { name } = createCharacterDto;
-      const query = this.CharacterRepository.createQueryBuilder();
-      query.where({ name}).andWhere({ userId: user});
-      const existAlready =await query.getOne();
-
-      if (existAlready !== null) {
-        return `Vous avez déjà crée ${name} ${user}`;
-      }
+    connectedUser: User,
+    ) {
+      const { name,imgBackground, imgCharacter,strength,dexterity, constitution, intelligence, charisma,luck,stealth,magic } = createCharacterDto;
+      
       const newChara =await this.CharacterRepository.create({
-        ...createCharacterDto,
-        userId: user,
+        name,
+        imgBackground,
+        imgCharacter,
+        strength,
+        dexterity,
+        constitution,
+        intelligence,
+        charisma,
+        luck,
+        stealth,
+        magic,
+        userJ: connectedUser,
       });
+      try {
     return await this.CharacterRepository.save(newChara);
+    } catch (error) {
+      "le personnage n'a pas été crée";
   }
+}
 
-  async findAllByUser(user: User
-    ): Promise<Character[]> {
-      const charaFound = await this.CharacterRepository.findBy({
-         userId: user,
-         });
-         if (!charaFound) {
-          throw new NotFoundException(`Personnage non trouvé`);
+          // --- Méthode pour afficher tout les personnages --- //
+  async findAllCharacter() {
+      const allCharaFound = await this.CharacterRepository.find();
+      console.log("Personnages trouvés :", allCharaFound);
+         if (!allCharaFound) {
+          throw new NotFoundException(`Personnages non trouvé`);
          }
-    return charaFound;
+    return allCharaFound;
   }
 
+        // --- Méthode pour trouver un personnage --- //
   async findOne(
-    idvalue: string,
-    user: User,
-    ): Promise<Character | string> {
+    idvalue: string,) {
+      try {
       const charaFound = await this.CharacterRepository.findOneBy({
         id: idvalue,
-        userId: user,
       });
-      if (!charaFound) {
+      return charaFound;
+    } catch (error) {
         throw new NotFoundException(`Aucun personnage trouvé abec le nom ${idvalue}`);
       }
-    return charaFound;
   }
 
+          // --- Méthode pour mettre a jour un personnage --- //
   async update(
-    idvalue: string,
+    idValue: string,
      updateCharacterDto: UpdateCharacterDto,
-     user: User,
-     ): Promise<Character | string> {
-      console.log(idvalue);
-      console.log('utilisateur : ', user);
-      const {name} = updateCharacterDto; //ajouter les stats ?
-      console.log('nom : ', name);
-      const query = this.CharacterRepository.createQueryBuilder();
-      query.where({ name}).andWhere({ userId: user});
-      const existAlready =await query.getOne();
+     connectedUser: User,
+     ) {
+      // --- Recherche campagne dans la BDD --- //
+    const charaFound = await this.CharacterRepository.findOneBy({
+      id: idValue,
+      userJ: connectedUser,
+    });
+    console.log(' user de la requète update :', connectedUser);
+    console.log(' personnage trouvée :', charaFound);
 
-      if (existAlready!== null) {
-        return `Le personnage ${name} existe déjà avec l'utilisateur ${user}`;
-  }
-      const query2 = this.CharacterRepository.createQueryBuilder();
-      query2.where({ id: idvalue }).andWhere({ userId: user });
-      const charaToUpdate = await query2.getOne();
-      console.log(charaToUpdate);
+    //--- Gestion erreur si pas de campagne dans la BDD --- //
+    if (!charaFound) {
+      throw new NotFoundException("Ce personnage n'existe pas");
+    }
 
-      if (!charaToUpdate) {
-        throw new NotFoundException(`Aucun personnage trouvé abec le nom ${idvalue}`);
-      }
-      try {
-        if (updateCharacterDto.strength !== null) {
-          charaToUpdate.strength = charaToUpdate.strength;
-      } else{
-        charaToUpdate.strength = updateCharacterDto.strength;
-      }
-      if (updateCharacterDto.dexterity!== null) {
-        charaToUpdate.dexterity = charaToUpdate.dexterity;
-        } else{
-          charaToUpdate.dexterity = updateCharacterDto.dexterity;
-        }
-        if (updateCharacterDto.constitution!== null) {
-          charaToUpdate.constitution = charaToUpdate.constitution;
-          } else{
-            charaToUpdate.constitution = updateCharacterDto.constitution;
-          }
-          if (updateCharacterDto.intelligence!== null) {
-            charaToUpdate.intelligence = charaToUpdate.intelligence;
-            } else{
-              charaToUpdate.intelligence = updateCharacterDto.intelligence;
-            }
-            if (updateCharacterDto.charisma!== null) {
-              charaToUpdate.charisma = charaToUpdate.charisma;
-              } else{ 
-                charaToUpdate.charisma = updateCharacterDto.charisma;
-              }
-              if (updateCharacterDto.luck!== null) {
-                charaToUpdate.luck = charaToUpdate.luck;
-                } else{
-                  charaToUpdate.luck = updateCharacterDto.luck;
-                }
-                if (updateCharacterDto.stealth!== null) {
-                  charaToUpdate.stealth = charaToUpdate.stealth;
-                  } else{
-                  charaToUpdate.stealth = updateCharacterDto.stealth;
-                }
-                if (updateCharacterDto.magic!== null) {
-                  charaToUpdate.magic = charaToUpdate.magic;
-                  } else{
-                    charaToUpdate.magic = updateCharacterDto.magic;
-                  }
+    // --- Gestion erreur si même valeur --- //
+    if (charaFound.name === updateCharacterDto.name) {
+      throw new Error('Erreur, le nom est le même que precedemment');
+    }
 
-      return await this.CharacterRepository.save(charaToUpdate);
-    } catch {
-      throw new Error('Une autre erreur est survenue');
+    // --- Destructuration de l'update afin de vérifier si il y'a deja une campagne existante --- //
+    const { name,imgBackground, imgCharacter,strength,dexterity, constitution, intelligence, charisma,luck,stealth,magic } = updateCharacterDto;
+    console.log('Nom du nouveau personnage :', name);
+  
+
+    if (name) {
+      charaFound.name = name;
+    }
+    if (imgBackground) {
+      charaFound.imgBackground = imgBackground;
+    }
+    if (imgCharacter) {
+      charaFound.imgCharacter = imgCharacter;
+    }
+    if (strength) {
+      charaFound.strength = strength;
+    }
+    if (dexterity) {
+      charaFound.dexterity = dexterity;
+    }
+    if (constitution) {
+      charaFound.constitution = constitution;
+    }
+    if (intelligence) {
+      charaFound.intelligence = intelligence;
+    }
+    if (charisma) {
+      charaFound.charisma = charisma;
+    }
+    if (luck) {
+      charaFound.luck = luck;
+    }
+    if (stealth) {
+      charaFound.stealth = stealth;
+    }
+    if (magic) {
+      charaFound.magic = magic;
+    }
+
+    try {
+      return await this.CharacterRepository.save(charaFound);
+    } catch (error) {
+      ` les données ne sont pas mises à jour`;
+      console.log(error);
     }
   }
-
+      
+          // --- Méthode pour supprimer un personnage --- //
   async remove(
     idvalue: string,
     user: User,
     ): Promise<Character | string> {
       const result = await this.CharacterRepository.delete({
-        userId: user,
+        userJ: user,
         id: idvalue,
       });
       {

@@ -9,6 +9,6 @@ import { Item } from './entities/item.entity';
 @Module({
   controllers: [ItemsController],
   providers: [ItemsService],
-  imports:[AuthModule, TypeOrmModule.forFeature([Item, User])],
+  imports: [AuthModule, TypeOrmModule.forFeature([Item, User])],
 })
 export class ItemsModule {}

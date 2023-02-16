@@ -16,48 +16,39 @@ export class ItemsService {
     private userRepository: Repository<User>,
   ) {}
 
-  async create(
-    createItemDto: CreateItemDto,
-    
-    ): Promise<Item | string> {
-      const {name} = createItemDto;
-      const query = this.itemRepository.createQueryBuilder();
-      query.where({name});
-      const existAlready = await query.getOne();
+  async create(createItemDto: CreateItemDto): Promise<Item | string> {
+    const { name } = createItemDto;
+    const query = this.itemRepository.createQueryBuilder();
+    query.where({ name });
+    const existAlready = await query.getOne();
 
-      if (existAlready !== null) {
-        return 'Cet objet existe déjà';
-      }
-      const newItem = await this.itemRepository.create({
-        ...createItemDto,
-        
-      });
+    if (existAlready !== null) {
+      return 'Cet objet existe déjà';
+    }
+    const newItem = await this.itemRepository.create({
+      ...createItemDto,
+    });
     return await this.itemRepository.save(newItem);
   }
 
-  async findAllByUser(
-    user: User,
-    ): Promise<Item[]> {
-      const itemFound = await this.itemRepository.findBy({
-        userId: user,
-      });
-      if (!itemFound) {
-        throw new NotFoundException(`Aucun objet trouvé `);
-      }
- return itemFound;
+  async findAllByUser(user: User): Promise<Item[]> {
+    const itemFound = await this.itemRepository.findBy({
+      userId: user,
+    });
+    if (!itemFound) {
+      throw new NotFoundException(`Aucun objet trouvé `);
     }
+    return itemFound;
+  }
 
-  async findOne(
-    idValue: string,
-    user: User,
-    ): Promise<Item | string> {
-      const itemFound = await this.itemRepository.findOneBy({
-        id: idValue,
-        userId: user,
-      });
-      if (!itemFound) {
-        throw new NotFoundException(`l'objet ${idValue} n'existe pas `);
-      }
+  async findOne(idValue: string, user: User): Promise<Item | string> {
+    const itemFound = await this.itemRepository.findOneBy({
+      id: idValue,
+      userId: user,
+    });
+    if (!itemFound) {
+      throw new NotFoundException(`l'objet ${idValue} n'existe pas `);
+    }
     return itemFound;
   }
 
@@ -65,17 +56,14 @@ export class ItemsService {
     return `This action updates a #${id} item`;
   }*/
 
-  async remove(
-    idValue: string,
-    user: User,
-    ): Promise<Item | string> {
-      const result = await this.itemRepository.delete({
-        userId: user,
-        id: idValue,
-      });
-      if (result.affected === 0) {
-        throw new NotFoundException(`l'objet ${idValue} n'existe pas `);
-      }
+  async remove(idValue: string, user: User): Promise<Item | string> {
+    const result = await this.itemRepository.delete({
+      userId: user,
+      id: idValue,
+    });
+    if (result.affected === 0) {
+      throw new NotFoundException(`l'objet ${idValue} n'existe pas `);
+    }
     return `L'objet ${idValue} à été supprimé`;
   }
 }

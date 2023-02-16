@@ -10,6 +10,6 @@ import { User } from 'src/users/entities/user.entity';
   imports: [AuthModule, TypeOrmModule.forFeature([Dice, User])],
   controllers: [DicesController],
   providers: [DicesService],
-  exports: [DicesService]
+  exports: [DicesService],
 })
 export class DicesModule {}

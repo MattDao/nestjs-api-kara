@@ -9,7 +9,7 @@ export const GetUser = createParamDecorator(
     const user: User = {
       ...req.user,
     };
- 
+
     return user;
   },
 );

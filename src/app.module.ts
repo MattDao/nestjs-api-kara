@@ -21,7 +21,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({
       envFilePath: '.env.local',
     }),
-   
+
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -29,7 +29,7 @@ import { ConfigModule } from '@nestjs/config';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Character, Item, Dice,Campagne],
+      entities: [User, Character, Item, Dice, Campagne],
       synchronize: process.env.MODE === 'DEV' ? true : false,
     }),
     UsersModule,
@@ -37,7 +37,7 @@ import { ConfigModule } from '@nestjs/config';
     DicesModule,
     ItemsModule,
     AuthModule,
-    CampagnesModule
+    CampagnesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

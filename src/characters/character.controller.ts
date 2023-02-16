@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CharacterService } from './character.service';
 import { CreateCharacterDto } from './dto/create-character.dto';
@@ -14,26 +23,23 @@ export class CharacterController {
   @Post()
   create(
     @Body() createCharacterDto: CreateCharacterDto,
-    @GetUser() user: User
-    ): Promise<Character | string> {
-      console.log(User);
+    @GetUser() user: User,
+  ): Promise<Character | string> {
+    console.log(User);
     return this.characterService.create(createCharacterDto, user);
   }
 
   @Get()
-  findAllByUser(
-    @GetUser() user: User,
-    ): Promise<Character[]> {
-      console.log(Character);
-      return this.characterService.findAllByUser(user);
+  findAllByUser(@GetUser() user: User): Promise<Character[]> {
+    console.log(Character);
+    return this.characterService.findAllByUser(user);
   }
-    
 
   @Get(':id')
   findOne(
     @Param('id') id: string,
-    @GetUser() user: User
-    ): Promise<Character | string> {
+    @GetUser() user: User,
+  ): Promise<Character | string> {
     return this.characterService.findOne(id, user);
   }
 
@@ -41,16 +47,13 @@ export class CharacterController {
   update(
     @Param('id') id: string,
     @Body() updateCharacterDto: UpdateCharacterDto,
-    @GetUser() user: User
-    ): Promise<Character | string> {
+    @GetUser() user: User,
+  ): Promise<Character | string> {
     return this.characterService.update(id, updateCharacterDto, user);
   }
 
   @Delete(':id')
-  remove(
-    @Param('id') id: string,
-    @GetUser() user: User
-    ) {
+  remove(@Param('id') id: string, @GetUser() user: User) {
     return this.characterService.remove(id, user);
   }
 }

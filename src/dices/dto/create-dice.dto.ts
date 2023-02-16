@@ -1,4 +1,4 @@
 export class CreateDiceDto {
-    nameSet: string;
-    value: number;
+  nameSet: string;
+  value: number;
 }

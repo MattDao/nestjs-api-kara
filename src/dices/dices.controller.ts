@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { Campagne } from 'src/campagnes/entities/campagne.entity';
@@ -15,15 +24,13 @@ export class DicesController {
   @Post()
   create(
     @Body() createDiceDto: CreateDiceDto,
-    @GetUser() user: User
+    @GetUser() user: User,
   ): Promise<Dice | string> {
     return this.dicesService.create(createDiceDto, user);
   }
 
   @Get()
-  findAllDicesByUser(
-    @GetUser() user: User,
-  ): Promise<Dice[]>{
+  findAllDicesByUser(@GetUser() user: User): Promise<Dice[]> {
     return this.dicesService.findAllDicesByUser(user);
   }
 
@@ -31,11 +38,11 @@ export class DicesController {
   findOne(
     @Param('id') id: string,
     @GetUser() user: User,
-    ): Promise<Dice | string> {
-    return this.dicesService.findOne(id,user);
+  ): Promise<Dice | string> {
+    return this.dicesService.findOne(id, user);
   }
 
- /* @Patch(':id')
+  /* @Patch(':id')
   update(
     @Param('id') id: string,
      @Body() updateDiceDto: UpdateDiceDto,
@@ -45,10 +52,7 @@ export class DicesController {
   }*/
 
   @Delete(':id')
-  remove(
-    @Param('id') id: string,
-    @GetUser() user: User
-    ) {
+  remove(@Param('id') id: string, @GetUser() user: User) {
     return this.dicesService.remove(id, user);
   }
 }

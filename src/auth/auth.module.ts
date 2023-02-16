@@ -4,7 +4,7 @@ import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { PassportModule } from '@nestjs/passport';
-import {JwtModule} from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 
 // --- configuration du jwt --- //
@@ -23,4 +23,3 @@ import { JwtStrategy } from './jwt.strategy';
   exports: [JwtStrategy, PassportModule, AuthService],
 })
 export class AuthModule {}
-

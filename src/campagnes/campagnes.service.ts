@@ -11,58 +11,55 @@ export class CampagnesService {
   constructor(
     @InjectRepository(Campagne) 
     private campagneRepository: Repository<Campagne>,
-    ) {}
+  ) {}
 
+  // --- Méthode pour créer une campagne --- //
 
-        // --- Méthode pour créer une campagne --- //
-  
-async create(createCampagneDto: CreateCampagneDto, connectedUser: User) {
-  const {name, style, imgBackground, body} = createCampagneDto;
-  const newCampagne = await this.campagneRepository.create({
-    name,
-    style,
-    imgBackground,
-    body,
-    userMj: connectedUser,
-  });
-  console.log('création nouvelle campagne-------- ', newCampagne);
+  async create(createCampagneDto: CreateCampagneDto, connectedUser: User) {
+    const { name, style, imgBackground, body } = createCampagneDto;
+    const newCampagne = await this.campagneRepository.create({
+      name,
+      style,
+      imgBackground,
+      body,
+      userMj: connectedUser,
+    });
+    console.log('création nouvelle campagne-------- ', newCampagne);
 
-  try {
-    return await this.campagneRepository.save(newCampagne);
-  } catch (error) {
-    ` les données ne sont pas crées`;
-    console.log(error);
+    try {
+      return await this.campagneRepository.save(newCampagne);
+    } catch (error) {
+      ` les données ne sont pas crées`;
+      console.log(error);
+    }
   }
-}
 
-          // --- Méthode pour afficher toutes les campagnes --- //
+  // --- Méthode pour afficher toutes les campagnes --- //
 
-    async findAllCampagne() {
-        const allCampagneFound = await this.campagneRepository.find(); 
-        console.log('Campagnes trouvées : ', allCampagneFound);
-        if (!allCampagneFound) {
-          throw new NotFoundException('Campagnes non trouvées');
-        }
+  async findAllCampagne() {
+    const allCampagneFound = await this.campagneRepository.find();
+    console.log('Campagnes trouvées : ', allCampagneFound);
+    if (!allCampagneFound) {
+      throw new NotFoundException('Campagnes non trouvées');
+    }
     return allCampagneFound;
-      }
-    
-          // --- Méthode pour afficher une campagne --- //
-  async findOne(
-      idValue: string,) {
-        try {
+  }
+
+  // --- Méthode pour afficher une campagne --- //
+  async findOne(idValue: string) {
+    try {
       const campagneFound = await this.campagneRepository.findOneBy({
         id: idValue,
       });
       return campagneFound;
     } catch (error) {
-        throw new NotFoundException(`Campagne non trouvée avec le nom :${idValue}`,
-        );
-      }
-    
+      throw new NotFoundException(
+        `Campagne non trouvée avec le nom :${idValue}`,
+      );
+    }
   }
 
-
-          // --- Méthode de mise a jour de la campagne --- //
+  // --- Méthode de mise a jour de la campagne --- //
 
   async update(
     idValue: string,
@@ -90,7 +87,6 @@ async create(createCampagneDto: CreateCampagneDto, connectedUser: User) {
     // --- Destructuration de l'update afin de vérifier si il y'a deja une campagne existante --- //
     const { name, style, imgBackground, body } = updateCampagneDto;
     console.log('Nom de la nouvelle campagne :', name);
-  
 
     if (name) {
       campagneFound.name = name;
@@ -105,10 +101,7 @@ async create(createCampagneDto: CreateCampagneDto, connectedUser: User) {
       console.log(error);
     }
   }
-  async remove(
-    idValue: string,
-    user: User,
-  ) {
+  async remove(idValue: string, user: User) {
     const result = await this.campagneRepository.delete({
       userMj: user,
       id: idValue,
@@ -121,5 +114,3 @@ async create(createCampagneDto: CreateCampagneDto, connectedUser: User) {
     return `Cette action entraine la suppresion de la campagne:${idValue}`;
   }
 }
-
-  

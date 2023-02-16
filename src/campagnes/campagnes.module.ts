@@ -9,6 +9,6 @@ import { User } from 'src/users/entities/user.entity';
   imports: [TypeOrmModule.forFeature([Campagne, User])],
   controllers: [CampagnesController],
   providers: [CampagnesService],
-  exports: [CampagnesService]
+  exports: [CampagnesService],
 })
 export class CampagnesModule {}
