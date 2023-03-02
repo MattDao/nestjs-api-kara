@@ -5,8 +5,8 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 // --- Mise en place des colonnes de l'entité users qui peut etre user ou mj --- //
 export enum RoleEnumType {
-  USER = 'user',
-  MJ = 'mj',
+  USER = 'joueur',
+  MJ = 'maitre du jeu',
 }
 
 @Entity()
@@ -45,7 +45,7 @@ export class User {
 
   // ---  Génération des clefs étrangères / en fonction de la cardinalités des tables --- //
 
-  @OneToMany(() => Character, (character) => character.userId, {
+  @OneToMany(() => Character, (character) => character.userJ, {
     onDelete: 'CASCADE',
   })
   characterId: Character[];

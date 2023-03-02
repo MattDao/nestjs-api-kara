@@ -15,65 +15,74 @@ export class CharacterService {
     private UserRepository: Repository<User>,
   ) {}
 
+  // --- Méthode pour créer un personnage --- //
+  async create(createCharacterDto: CreateCharacterDto, connectedUser: User) {
+    const {
+      name,
+      imgBackground,
+      imgCharacter,
+      strength,
+      dexterity,
+      constitution,
+      intelligence,
+      charisma,
+      luck,
+      stealth,
+      magic,
+    } = createCharacterDto;
 
-            // --- Méthode pour créer un personnage --- //
-  async create(
-    createCharacterDto: CreateCharacterDto,
-    connectedUser: User,
-    ) {
-      const { name,imgBackground, imgCharacter,strength,dexterity, constitution, intelligence, charisma,luck,stealth,magic } = createCharacterDto;
-      
-      const newChara =await this.CharacterRepository.create({
-        name,
-        imgBackground,
-        imgCharacter,
-        strength,
-        dexterity,
-        constitution,
-        intelligence,
-        charisma,
-        luck,
-        stealth,
-        magic,
-        userJ: connectedUser,
-      });
-      try {
-    return await this.CharacterRepository.save(newChara);
+    const newChara = await this.CharacterRepository.create({
+      name,
+      imgBackground,
+      imgCharacter,
+      strength,
+      dexterity,
+      constitution,
+      intelligence,
+      charisma,
+      luck,
+      stealth,
+      magic,
+      userJ: connectedUser,
+    });
+    try {
+      return await this.CharacterRepository.save(newChara);
     } catch (error) {
-      "le personnage n'a pas été crée";
+      ("le personnage n'a pas été crée");
+    }
   }
-}
 
-          // --- Méthode pour afficher tout les personnages --- //
+  // --- Méthode pour afficher tout les personnages --- //
   async findAllCharacter() {
-      const allCharaFound = await this.CharacterRepository.find();
-      console.log("Personnages trouvés :", allCharaFound);
-         if (!allCharaFound) {
-          throw new NotFoundException(`Personnages non trouvé`);
-         }
+    const allCharaFound = await this.CharacterRepository.find();
+    console.log('Personnages trouvés :', allCharaFound);
+    if (!allCharaFound) {
+      throw new NotFoundException(`Personnages non trouvé`);
+    }
     return allCharaFound;
   }
 
-        // --- Méthode pour trouver un personnage --- //
-  async findOne(
-    idvalue: string,) {
-      try {
+  // --- Méthode pour trouver un personnage --- //
+  async findOne(idvalue: string) {
+    try {
       const charaFound = await this.CharacterRepository.findOneBy({
         id: idvalue,
       });
       return charaFound;
     } catch (error) {
-        throw new NotFoundException(`Aucun personnage trouvé abec le nom ${idvalue}`);
-      }
+      throw new NotFoundException(
+        `Aucun personnage trouvé abec le nom ${idvalue}`,
+      );
+    }
   }
 
-          // --- Méthode pour mettre a jour un personnage --- //
+  // --- Méthode pour mettre a jour un personnage --- //
   async update(
     idValue: string,
-     updateCharacterDto: UpdateCharacterDto,
-     connectedUser: User,
-     ) {
-      // --- Recherche campagne dans la BDD --- //
+    updateCharacterDto: UpdateCharacterDto,
+    connectedUser: User,
+  ) {
+    // --- Recherche campagne dans la BDD --- //
     const charaFound = await this.CharacterRepository.findOneBy({
       id: idValue,
       userJ: connectedUser,
@@ -92,9 +101,20 @@ export class CharacterService {
     }
 
     // --- Destructuration de l'update afin de vérifier si il y'a deja une campagne existante --- //
-    const { name,imgBackground, imgCharacter,strength,dexterity, constitution, intelligence, charisma,luck,stealth,magic } = updateCharacterDto;
+    const {
+      name,
+      imgBackground,
+      imgCharacter,
+      strength,
+      dexterity,
+      constitution,
+      intelligence,
+      charisma,
+      luck,
+      stealth,
+      magic,
+    } = updateCharacterDto;
     console.log('Nom du nouveau personnage :', name);
-  
 
     if (name) {
       charaFound.name = name;
@@ -137,22 +157,20 @@ export class CharacterService {
       console.log(error);
     }
   }
-      
-          // --- Méthode pour supprimer un personnage --- //
-  async remove(
-    idvalue: string,
-    user: User,
-    ): Promise<Character | string> {
-      const result = await this.CharacterRepository.delete({
-        userJ: user,
-        id: idvalue,
-      });
-      {
+
+  // --- Méthode pour supprimer un personnage --- //
+  async remove(idvalue: string, user: User): Promise<Character | string> {
+    const result = await this.CharacterRepository.delete({
+      userJ: user,
+      id: idvalue,
+    });
+    {
       if (result.affected === 0) {
-        throw new NotFoundException(`Aucun personnage trouvé abec le nom ${idvalue}`);
+        throw new NotFoundException(
+          `Aucun personnage trouvé abec le nom ${idvalue}`,
+        );
       }
-    return `Le personnage avec le nom ${idvalue} à été supprimé`;
+      return `Le personnage avec le nom ${idvalue} à été supprimé`;
     }
   }
 }
-

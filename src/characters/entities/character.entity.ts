@@ -91,7 +91,7 @@ export class Character {
   userJ: User;
 
   @ManyToOne(() => Campagne, (chara) => chara.id, {
-    nullable: false,
+    nullable: true,
     onDelete: 'CASCADE',
   })
   campagneId: Campagne;

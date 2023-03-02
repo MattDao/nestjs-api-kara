@@ -21,7 +21,7 @@ export class Campagne {
   })
   name: string;
   @Column({
-    nullable: false, 
+    nullable: false,
     type: 'varchar',
     length: 50,
   })
@@ -56,5 +56,4 @@ export class Campagne {
     onDelete: 'CASCADE',
   })
   characterId: Character[];
-
 }

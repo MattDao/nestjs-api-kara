@@ -1,9 +1,9 @@
-import { 
+import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
-    UnauthorizedException 
-    } from '@nestjs/common';
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import * as bcrypt from 'bcrypt';
@@ -18,11 +18,11 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   //--- Création d'un compte utilisateur --- //
-  
+
   async register(createAuthDto: CreateAuthDto) {
     const { pseudo, email, password, role } = createAuthDto;
 
@@ -37,9 +37,9 @@ export class AuthService {
       password: hashedPassword,
       role,
     });
-    
- // --- Ici on crée la gestion d'erreur (ne pouvant pas créer 2 fois le même compte) --- //
- // --- On compare email et mot de passe pour savoir si le compte user existe déja --- //
+
+    // --- Ici on crée la gestion d'erreur (ne pouvant pas créer 2 fois le même compte) --- //
+    // --- On compare email et mot de passe pour savoir si le compte user existe déja --- //
     const pseudoExistAlready = await this.userRepository.findBy({
       pseudo,
     });

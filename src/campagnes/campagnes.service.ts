@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class CampagnesService {
   constructor(
-    @InjectRepository(Campagne) 
+    @InjectRepository(Campagne)
     private campagneRepository: Repository<Campagne>,
   ) {}
 
@@ -36,8 +36,10 @@ export class CampagnesService {
 
   // --- Méthode pour afficher toutes les campagnes --- //
 
-  async findAllCampagne() {
-    const allCampagneFound = await this.campagneRepository.find();
+  async findAllCampagne(connectedUser: User) {
+    const allCampagneFound = await this.campagneRepository.findBy({
+      userMj: connectedUser,
+    });
     console.log('Campagnes trouvées : ', allCampagneFound);
     if (!allCampagneFound) {
       throw new NotFoundException('Campagnes non trouvées');
@@ -46,10 +48,11 @@ export class CampagnesService {
   }
 
   // --- Méthode pour afficher une campagne --- //
-  async findOne(idValue: string) {
+  async findOne(idValue: string, connectedUser: User) {
     try {
       const campagneFound = await this.campagneRepository.findOneBy({
         id: idValue,
+        userMj: connectedUser,
       });
       return campagneFound;
     } catch (error) {

@@ -41,7 +41,7 @@ export class CampagnesController {
   @UseGuards(RolesGuard)
   @Roles(RoleEnumType.MJ)
   findAllCampagne(@GetUser() user: User): Promise<Campagne[]> {
-    return this.campagnesService.findAllCampagne();
+    return this.campagnesService.findAllCampagne(user);
   }
 
   @Get(':id')
@@ -49,7 +49,7 @@ export class CampagnesController {
     @Param('id') id: string,
     @GetUser() user: User,
   ): Promise<Campagne | string> {
-    return this.campagnesService.findOne(id);
+    return this.campagnesService.findOne(id, user);
   }
 
   @Patch(':id')

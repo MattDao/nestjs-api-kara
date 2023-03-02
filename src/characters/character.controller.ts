@@ -32,7 +32,7 @@ export class CharacterController {
   @Get()
   findAllByUser(@GetUser() user: User): Promise<Character[]> {
     console.log(Character);
-    return this.characterService.findAllByUser(user);
+    return this.characterService.findAllCharacter();
   }
 
   @Get(':id')
@@ -40,7 +40,7 @@ export class CharacterController {
     @Param('id') id: string,
     @GetUser() user: User,
   ): Promise<Character | string> {
-    return this.characterService.findOne(id, user);
+    return this.characterService.findOne(id);
   }
 
   @Patch(':id')
