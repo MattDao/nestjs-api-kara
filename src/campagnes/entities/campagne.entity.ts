@@ -1,4 +1,3 @@
-import { Dice } from 'src/dices/entities/dice.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Character } from 'src/characters/entities/character.entity';
 import {
@@ -42,18 +41,9 @@ export class Campagne {
 
   @ManyToOne(() => User, (user) => user.campagneId, {
     nullable: false,
-    onDelete: 'CASCADE',
   })
   userMj: User;
 
-  @OneToOne(() => Dice, (dice) => dice.campagnes, {
-    nullable: false,
-    onDelete: 'CASCADE',
-  })
-  diceId: Dice;
-
-  @OneToMany(() => Character, (character) => character.campagneId, {
-    onDelete: 'CASCADE',
-  })
+  @OneToMany(() => Character, (character) => character.campagneId, {})
   characterId: Character[];
 }

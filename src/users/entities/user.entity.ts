@@ -1,6 +1,5 @@
 import { Campagne } from 'src/campagnes/entities/campagne.entity';
 import { Character } from 'src/characters/entities/character.entity';
-import { Dice } from 'src/dices/entities/dice.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 // --- Mise en place des colonnes de l'entité users qui peut etre joueur ou maitre du jeu --- //
@@ -54,9 +53,4 @@ export class User {
     onDelete: 'CASCADE',
   })
   campagneId: Campagne[];
-
-  @OneToMany(() => Dice, (dice) => dice.user, {
-    onDelete: 'CASCADE',
-  })
-  diceId: Dice;
 }

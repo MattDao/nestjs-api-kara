@@ -86,13 +86,11 @@ export class Character {
 
   @ManyToOne(() => User, (character) => character.id, {
     nullable: false,
-    onDelete: 'CASCADE',
   })
   userJ: User;
 
   @ManyToOne(() => Campagne, (chara) => chara.id, {
     nullable: true,
-    onDelete: 'CASCADE',
   })
   campagneId: Campagne;
 

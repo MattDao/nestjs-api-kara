@@ -1,12 +1,5 @@
 import { Character } from 'src/characters/entities/character.entity';
-import { User } from 'src/users/entities/user.entity';
-import {
-  Column,
-  Entity,
-  ManyToMany,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Item {
@@ -20,15 +13,8 @@ export class Item {
   })
   name: string;
 
-  // @ManyToMany(() => Character, (character) => character.id, {
-  //     nullable: false,
-  //     onDelete: 'CASCADE',
-  // })
-  // characters: Character;
-
-  @ManyToOne(() => User, (item) => item.id, {
+  @ManyToMany(() => Character, (character) => character.id, {
     nullable: false,
-    onDelete: 'CASCADE',
   })
-  userId: User;
+  characters: Character;
 }
