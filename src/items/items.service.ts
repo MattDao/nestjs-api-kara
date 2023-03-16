@@ -31,20 +31,17 @@ export class ItemsService {
     return await this.itemRepository.save(newItem);
   }
 
-  async findAllByUser(user: User): Promise<Item[]> {
-    const itemFound = await this.itemRepository.findBy({
-      userId: user,
-    });
+  async findAllByUser(): Promise<Item[]> {
+    const itemFound = await this.itemRepository.findBy({});
     if (!itemFound) {
       throw new NotFoundException(`Aucun objet trouvé `);
     }
     return itemFound;
   }
 
-  async findOne(idValue: string, user: User): Promise<Item | string> {
+  async findOne(idValue: string): Promise<Item | string> {
     const itemFound = await this.itemRepository.findOneBy({
       id: idValue,
-      userId: user,
     });
     if (!itemFound) {
       throw new NotFoundException(`l'objet ${idValue} n'existe pas `);
@@ -56,9 +53,8 @@ export class ItemsService {
     return `This action updates a #${id} item`;
   }*/
 
-  async remove(idValue: string, user: User): Promise<Item | string> {
+  async remove(idValue: string): Promise<Item | string> {
     const result = await this.itemRepository.delete({
-      userId: user,
       id: idValue,
     });
     if (result.affected === 0) {
