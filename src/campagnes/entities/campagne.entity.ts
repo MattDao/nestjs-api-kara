@@ -4,13 +4,12 @@ import {
   Column,
   Entity,
   OneToMany,
-  OneToOne,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 @Entity()
 export class Campagne {
-  @PrimaryGeneratedColumn('uuid') // La fonction uuid est une dependencie et transforme l'Id de type number en type string.
+  @PrimaryGeneratedColumn('uuid') // La fonction uuid est une dependence et transforme l'Id de type number en type string.
   id?: string;
 
   @Column({
