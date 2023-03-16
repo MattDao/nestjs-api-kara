@@ -3,7 +3,7 @@ import { Character } from 'src/characters/entities/character.entity';
 import { Dice } from 'src/dices/entities/dice.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-// --- Mise en place des colonnes de l'entité users qui peut etre user ou mj --- //
+// --- Mise en place des colonnes de l'entité users qui peut etre joueur ou maitre du jeu --- //
 export enum RoleEnumType {
   USER = 'joueur',
   MJ = 'maitre du jeu',

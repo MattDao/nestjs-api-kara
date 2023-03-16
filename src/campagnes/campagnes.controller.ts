@@ -20,6 +20,7 @@ import { Roles } from 'src/auth/roles.decorator';
 import { PassportModule } from '@nestjs/passport';
 
 @Controller('campagnes')
+// ---- Utilise le middleware pour protéger les routes suivantes ---- //
 @UseGuards(AuthGuard('jwt'))
 export class CampagnesController {
   constructor(private readonly campagnesService: CampagnesService) {}
@@ -37,13 +38,16 @@ export class CampagnesController {
     return this.campagnesService.create(createCampagneDto, userConnected);
   }
 
+  // ---- Route qui permet de trouver toutes les campagnes ---- //
   @Get()
+  // --- Protège son utilisation et détermine le rôle qui peut l'utiliser --- //
   @UseGuards(RolesGuard)
   @Roles(RoleEnumType.MJ)
   findAllCampagne(@GetUser() user: User): Promise<Campagne[]> {
     return this.campagnesService.findAllCampagne(user);
   }
 
+  // ---- Route qui permet de trouver une campagne en particulier ---- //
   @Get(':id')
   findOne(
     @Param('id') id: string,
@@ -52,7 +56,9 @@ export class CampagnesController {
     return this.campagnesService.findOne(id, user);
   }
 
+  // ---- Route qui permet de mettre à jour une campagne ---- //
   @Patch(':id')
+  // --- Protège son utilisation et détermine le rôle qui peut l'utiliser --- //
   @UseGuards(RolesGuard)
   @Roles(RoleEnumType.MJ)
   update(
@@ -63,7 +69,9 @@ export class CampagnesController {
     return this.campagnesService.update(id, updateCampagneDto, user);
   }
 
+  // ---- Route qui permet de supprimer une campagne ---- //
   @Delete(':id')
+  // --- Protège son utilisation et détermine le rôle qui peut l'utiliser --- //
   @UseGuards(RolesGuard)
   @Roles(RoleEnumType.MJ)
   remove(
